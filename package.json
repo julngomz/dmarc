@@ -12,9 +12,13 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.12",
     "@tanstack/react-router": "^1.114.2",
+    "@turf/center": "^7.2.0",
     "clsx": "^2.1.1",
+    "maplibre-gl": "^5.2.0",
+    "pmtiles": "^4.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-map-gl": "^8.0.1",
     "tailwindcss": "^4.0.12"
   },
   "devDependencies": {
