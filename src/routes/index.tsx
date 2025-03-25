@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
+import Map from '../components/map/Map.tsx'
 
 export const Route = createFileRoute('/')({
-  component: RouteComponent,
+  component: MapComponent,
 })
 
-function RouteComponent() {
-  return <div>Hello "/"!</div>
+function MapComponent() {
+  return <Map />
 }

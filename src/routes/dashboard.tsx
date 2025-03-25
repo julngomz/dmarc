@@ -5,5 +5,10 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/dashboard"!</div>
+  return (
+    <div className='flex flex-col h-screen content-center items-center'>
+      <p>Dashboard</p>
+    </div >
+
+  )
 }
