@@ -11,11 +11,13 @@ import {
   LngLatBoundsLike,
 } from "maplibre-gl";
 
-type LayerContext = 'cities' | 'zips' | 'nhoods'
+type LayerContext = 'cities' | 'zips' | 'nhoods' | 'pantries'
 type BoundingBoxes = Map<LayerContext, LngLatBoundsLike>
 
+
+
 class MetroMap extends MLMap {
-  contexts: LayerContext[] = ['cities', 'zips', 'nhoods']
+  contexts: LayerContext[] = ['cities', 'zips', 'nhoods', 'pantries']
   activeContext: LayerContext = 'cities'
   boundingBoxes: BoundingBoxes = new Map()
 
@@ -49,7 +51,7 @@ class MetroMap extends MLMap {
   *
   */
   _getBoundingBoxes(): void {
-    const contexts: LayerContext[] = ['cities', 'zips', 'nhoods']
+    const contexts: LayerContext[] = ['cities', 'zips', 'nhoods', 'pantries']
 
     contexts.forEach((context) => {
       const bbox = this._calculateBoundingBox(context)

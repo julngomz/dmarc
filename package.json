@@ -20,6 +20,7 @@
     "@turf/centroid": "^7.2.0",
     "@turf/combine": "^7.2.0",
     "clsx": "^2.1.1",
+    "dmarc": "file:",
     "maplibre-gl": "^5.2.0",
     "pmtiles": "^4.3.0",
     "react": "^19.0.0",
