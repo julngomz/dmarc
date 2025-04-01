@@ -32,12 +32,27 @@ const Map: React.FC<MapProps> = ({ context }) => {
             'cities': MAP_DEFAULTS.SOURCES.CITIES,
             'zips': MAP_DEFAULTS.SOURCES.ZIP_CODES,
             'nhoods': MAP_DEFAULTS.SOURCES.NHOODS,
+            'pantries': {
+              type: 'geojson',
+              data: '/data/metro/pantries.json'
+            }
           },
           layers: [
             MAP_DEFAULTS.LAYERS.BASEMAP,
             ...MAP_DEFAULTS.LAYERS.NHOODS,
             ...MAP_DEFAULTS.LAYERS.CITIES,
             ...MAP_DEFAULTS.LAYERS.ZIP_CODE,
+            {
+              id: 'pantries',
+              type: 'circle',
+              source: 'pantries',
+              paint: {
+                'circle-color': '#FF0000',
+                'circle-radius': 6,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF'
+              }
+            }
           ]
         },
         center: MAP_DEFAULTS.STATIC.MAP_CENTER,

@@ -25,10 +25,14 @@ interface Layers {
 
 type BoundingBoxes = Map<string, LngLatBoundsLike>
 
+
+
+
 class MetroMap extends MLMap {
   layers: Layers = { contexts: [], types: [] }
   activeContext: string = 'cities'
   activeTile: string = ''
+
   boundingBoxes: BoundingBoxes = new Map()
 
   constructor(options: MapOptions, context: string, contexts: string[]) {
