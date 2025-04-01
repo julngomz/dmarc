@@ -14,11 +14,12 @@ const Map = () => {
     if (!mapContainer.current) return
 
     try {
+      console.log('Initializing map...')
       map.current = new MetroMap({
         container: mapContainer.current,
         style: {
           version: 8,
-          glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+          glyphs: MAP_DEFAULTS.STATIC.DEFAULT_GLYPHS_URL,
           sources: {
             'osm': MAP_DEFAULTS.SOURCES.BASEMAP,
             'cities': MAP_DEFAULTS.SOURCES.CITIES,
@@ -26,7 +27,8 @@ const Map = () => {
             'nhoods': MAP_DEFAULTS.SOURCES.NHOODS,
             'pantries': {
               type: 'geojson',
-              data: '/data/metro/pantries.json'
+              data: '/data/metro/pantries.json',
+              generateId: true
             }
           },
           layers: [
@@ -56,10 +58,18 @@ const Map = () => {
         doubleClickZoom: false,
       })
 
-      map.current!.setContext('zips')
+      // Wait for map to load before setting context
+      map.current.on('load', () => {
+        console.log('Map loaded, setting context...')
+        map.current!.setContext('zips')
+      })
 
     } catch (error) {
       console.error("Error loading map:", error)
+      if (error instanceof Error) {
+        console.error("Error details:", error.message)
+        console.error("Stack trace:", error.stack)
+      }
     }
 
     const protocol = new Protocol();
