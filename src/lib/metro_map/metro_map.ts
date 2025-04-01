@@ -9,6 +9,8 @@ import {
   MapMouseEvent,
   LngLatBounds,
   LngLatBoundsLike,
+  Popup,
+  LngLatLike
 } from "maplibre-gl";
 
 type LayerContext = 'cities' | 'zips' | 'nhoods' | 'pantries'
@@ -18,7 +20,7 @@ type BoundingBoxes = Map<LayerContext, LngLatBoundsLike>
 
 class MetroMap extends MLMap {
   contexts: LayerContext[] = ['cities', 'zips', 'nhoods', 'pantries']
-  activeContext: LayerContext = 'cities'
+  activeContext: LayerContext = 'zips'
   boundingBoxes: BoundingBoxes = new Map()
 
   constructor(options: MapOptions) {
@@ -125,6 +127,32 @@ class MetroMap extends MLMap {
       this.on('mouseenter', layerId, this._handleMouseEnter.bind(this))
       this.on('mouseleave', layerId, this._handleMouseLeave.bind(this))
       this.on('click', layerId, this._handleFeatureClick.bind(this))
+    })
+
+    // Add pantry-specific event handlers
+    this.on('mouseenter', 'pantries', () => {
+      this.getCanvas().style.cursor = 'pointer'
+    })
+
+    this.on('mouseleave', 'pantries', () => {
+      this.getCanvas().style.cursor = ''
+    })
+
+    this.on('click', 'pantries', (e: MapMouseEvent) => {
+      const features = this.queryRenderedFeatures(e.point, { layers: ['pantries'] })
+      if (features.length > 0) {
+        const feature = features[0]
+        const name = feature.properties?.name
+        const address = feature.properties?.address
+        const coordinates = feature.geometry.type === 'Point' ? feature.geometry.coordinates : null
+
+        if (coordinates) {
+          new Popup()
+            .setLngLat(coordinates as [number, number])
+            .setHTML(`<strong>${name}</strong><br>${address}`)
+            .addTo(this)
+        }
+      }
     })
   }
 
