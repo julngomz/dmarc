@@ -3,11 +3,19 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import * as MAP_DEFAULTS from "../../lib/metro_map/defaults/index"
 import { useEffect, useRef } from "react"
 import { Protocol } from "pmtiles"
-import MetroMap from "../../lib/metro_map/metro_map"
+import MetroMap from "../../lib/metro_map/MetroMap"
+import PopUp from "./Popup"
 
-const Map = () => {
+interface MapProps {
+  context: string,
+}
+
+const Map: React.FC<MapProps> = ({ context }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<MetroMap | null>(null)
+
+  const protocol = new Protocol()
+  maplibregl.addProtocol("pmtiles", protocol.tile)
 
   useEffect(() => {
     if (map.current) return
@@ -39,16 +47,13 @@ const Map = () => {
         touchZoomRotate: false,
         scrollZoom: false,
         doubleClickZoom: false,
-      })
-
-      map.current!.setContext('zips')
-
+      },
+        'cities',
+        ['zips', 'cities', 'nhoods']
+      )
     } catch (error) {
       console.error("Error loading map:", error)
     }
-
-    const protocol = new Protocol();
-    maplibregl.addProtocol("pmtiles", protocol.tile);
 
     return () => {
       if (map.current) {
@@ -57,6 +62,19 @@ const Map = () => {
       }
     }
   }, []);
+
+  // Update the map when the context changes when picking a list from dropdown options
+  useEffect(() => {
+    if (!map.current) return
+
+    if (!map.current!.loaded()) {
+      map.current.once('load', () => {
+        map.current!.setContext(context)
+      })
+    } else {
+      map.current.setContext(context)
+    }
+  }, [context])
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
