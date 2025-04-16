@@ -1,54 +1,27 @@
-# React + TypeScript + Vite
+# DMARC United
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## What is DMARC United?
 
-Currently, two official plugins are available:
+The [Des Moines Area Religious Council (DMARC)](https://dmarcunited.org/) is an interfaith organization with a mission of working together to meet basic human needs for the greater Des Moines community.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The DMARC Food Pantry Network consists of 14 permanently placed patnry sites, multiple Mobile Food Pantry locations, and a home delivery program. The DMARC Food Pantry Network is committed to providing healthy food options and fresh produce to the people we assist.
 
-## Expanding the ESLint configuration
+Once per calendar month, people can select a three-day supply of food from any one of our partner food pantries, and anytime Items are available whenever our partner parties are open. DMARC could never do the work of feeding so many people without the partnership of many, diverse faith communities.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Background
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+The DMARC Food Pantry Network operates a shared intake system and database.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Food pantry visitors are asked a series of 12-14 questions about their household to help us understand the specific needs of our community.
+- Coupled with demographic information, we can begin to see some patterns across different geographic areas and other key demographics.
+- At subsequent visits, those doing intake will just quickly verify that none of their information has changed.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Objective
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Displays information about how many people are utilizing the DMARC Food Pantry Network, where they are coming from, and basic demographic information.
+
+- explore more about the prevalence food insecurity is in their own city or neighborhood and
+- show the sheer volume of people who are being affected by food insecurity.
+- Compare the Des Moines metro area with surrounding municipality.
+
+## Technologies
