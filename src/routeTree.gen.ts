@@ -24,7 +24,6 @@ const MapRoute = MapImport.update({
   path: '/map',
   getParentRoute: () => rootRoute,
 } as any)
-
 const HelpRoute = HelpImport.update({
   id: '/help',
   path: '/help',
@@ -86,6 +85,7 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof MapImport
+
       parentRoute: typeof rootRoute
     }
   }
@@ -99,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/explorer': typeof ExplorerRoute
   '/help': typeof HelpRoute
   '/map': typeof MapRoute
+
 }
 
 export interface FileRoutesByTo {

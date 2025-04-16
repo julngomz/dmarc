@@ -13,7 +13,6 @@ import {
   LngLatLike
 } from "maplibre-gl";
 
-
 /**
  *
  * The layers type contains the available contexts and layers in the map.
@@ -26,9 +25,6 @@ interface Layers {
 }
 
 type BoundingBoxes = Map<string, LngLatBoundsLike>
-
-
-
 
 class MetroMap extends MLMap {
   layers: Layers = { contexts: [], types: [] }
