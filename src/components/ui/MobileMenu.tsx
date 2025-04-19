@@ -12,8 +12,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, mobileMenuRef }: Mobile
   return (
     <div
       ref={mobileMenuRef}
-      className="md:hidden bg-white border-b shadow-md py-3 px-4 fixed top-16 left-0 right-0 z-20 w-full"
-    >
+      className={`
+        transform transition-transform duration-500 ease-in-out
+        md:hidden bg-white border-b shadow-md py-3 px-4 fixed top-12 left-0 right-0 z-20 w-full
+        ${isOpen ? 'translate-y-0' : 'translate-y-full'}
+      `}>
       <nav className="flex flex-col space-y-3 w-full">
         <Link
           to="/"

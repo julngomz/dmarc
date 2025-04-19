@@ -9,11 +9,12 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ toggleMobileMenu, mobileButtonRef }) => {
   return (
-    <header className="bg-white text-black p-4 z-30">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="bg-white text-black px-4 py-2">
+      <div className="flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-lg font-bold text-primary">
-            <img src={logo} alt="DMARC Logo with different shades of blues" className='w-32' />
+            {/*<img src={logo} alt="DMARC Logo with different shades of blues" className='w-32' />*/}
+            <p className='text-3xl font-bold'>LOGO</p>
           </Link>
         </div>
 

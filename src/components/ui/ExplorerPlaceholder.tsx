@@ -5,8 +5,8 @@ const MapPlaceholder = () => {
       <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
         <div className="text-center">
           <div className="text-6xl mb-2">📈</div>
-          <p className="text-gray-500">The DMARC United Explorer is loading.</p>
-          <p className="text-xs text-gray-400 mt-4">Pantry data collected by DMARC United.</p>
+          <p className="text-gray-500">The Explorer is loading.</p>
+          <p className="text-xs text-gray-400 mt-4">Explore Pantry Data</p>
         </div>
       </div>
     </div>

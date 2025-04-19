@@ -11,7 +11,6 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as MapImport } from './routes/map'
 import { Route as HelpImport } from './routes/help'
 import { Route as ExplorerImport } from './routes/explorer'
 import { Route as AboutImport } from './routes/about'
@@ -19,11 +18,6 @@ import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const MapRoute = MapImport.update({
-  id: '/map',
-  path: '/map',
-  getParentRoute: () => rootRoute,
-} as any)
 const HelpRoute = HelpImport.update({
   id: '/help',
   path: '/help',
@@ -80,14 +74,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpImport
       parentRoute: typeof rootRoute
     }
-    '/map': {
-      id: '/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof MapImport
-
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -98,8 +84,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/explorer': typeof ExplorerRoute
   '/help': typeof HelpRoute
-  '/map': typeof MapRoute
-
 }
 
 export interface FileRoutesByTo {
@@ -107,7 +91,6 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/explorer': typeof ExplorerRoute
   '/help': typeof HelpRoute
-  '/map': typeof MapRoute
 }
 
 export interface FileRoutesById {
@@ -116,15 +99,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/explorer': typeof ExplorerRoute
   '/help': typeof HelpRoute
-  '/map': typeof MapRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/explorer' | '/help' | '/map'
+  fullPaths: '/' | '/about' | '/explorer' | '/help'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/explorer' | '/help' | '/map'
-  id: '__root__' | '/' | '/about' | '/explorer' | '/help' | '/map'
+  to: '/' | '/about' | '/explorer' | '/help'
+  id: '__root__' | '/' | '/about' | '/explorer' | '/help'
   fileRoutesById: FileRoutesById
 }
 
@@ -133,7 +115,6 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ExplorerRoute: typeof ExplorerRoute
   HelpRoute: typeof HelpRoute
-  MapRoute: typeof MapRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -141,7 +122,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ExplorerRoute: ExplorerRoute,
   HelpRoute: HelpRoute,
-  MapRoute: MapRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,8 +137,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/explorer",
-        "/help",
-        "/map"
+        "/help"
       ]
     },
     "/": {
@@ -172,9 +151,6 @@ export const routeTree = rootRoute
     },
     "/help": {
       "filePath": "help.tsx"
-    },
-    "/map": {
-      "filePath": "map.tsx"
     }
   }
 }
