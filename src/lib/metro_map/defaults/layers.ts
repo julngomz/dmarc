@@ -1,11 +1,11 @@
 import { LayerSpecification } from "maplibre-gl"
 
 const BASEMAP: LayerSpecification = {
-  id: "osm",
-  type: "raster",
-  source: "osm",
-  minzoom: 10,
-  maxzoom: 14,
+  id: 'osm',
+  type: 'raster',
+  source: 'osm',
+  minzoom: 0,
+  maxzoom: 22
 }
 
 const CITIES: LayerSpecification[] = [

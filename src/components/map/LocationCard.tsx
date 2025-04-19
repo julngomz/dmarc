@@ -6,10 +6,13 @@ interface LocationCardProps {
   onClick: () => void
 }
 
-const LocationCard: React.FC<LocationCardProps> = ({ location, onClick }) => {
+const LocationCard: React.FC<LocationCardProps> = ({
+  location,
+  onClick
+}: LocationCardProps) => {
   return (
     <div
-      className="p-4 border-b hover:bg-gray-50 cursor-pointer"
+      className="p-4 border-b hover:bg-gray-50 hover:cursor-pointer"
       onClick={onClick}
     >
       <div className="flex items-start gap-3">

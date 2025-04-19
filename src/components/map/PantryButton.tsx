@@ -3,26 +3,20 @@ import { MapPin } from 'lucide-react'
 import clsx from 'clsx'
 
 interface PantryButtonProps {
-  isVisible: boolean
   onClick: () => void
 }
 
-const PantryButton: React.FC<PantryButtonProps> = ({ isVisible, onClick }) => {
+const PantryButton: React.FC<PantryButtonProps> = ({ onClick }) => {
   return (
     <div className={
       clsx(
-        `z-10 absolute transition-opacity duration-200 bottom-12 
+        `z-20 absolute transition-opacity duration-200 bottom-4 
           left-0 right-0 flex justify-center mx-auto md:justify-start 
-          md:left-6 md:right-auto md:bottom-6`,
-        {
-          'opacity-100': isVisible == true,
-          'opacity-0 pointer-events-none': isVisible == false
-        }
+          md:left-4 md:right-auto md:bottom-4`,
       )}>
       <button
         className="bg-white px-6 py-3 rounded-full hover:cursor-pointer hover:bg-gray-100 text-primary font-medium flex items-center gap-2 border border-primary"
-        onClick={onClick}
-      >
+        onClick={onClick}>
         <MapPin size={20} className="text-primary" />
         Find a Pantry
       </button>
