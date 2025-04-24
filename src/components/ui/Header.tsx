@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react'
+import { MapPin, Menu } from 'lucide-react'
 import logo from '../../assets/dmarc-logo.svg'
 import { Link } from '@tanstack/react-router'
 
@@ -18,35 +18,46 @@ const Header: React.FC<HeaderProps> = ({ toggleMobileMenu, mobileButtonRef }) =>
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center gap-6">
+          <div className='flex gap-4'>
+            <Link
+              to="/"
+              className="text-primary font-medium hover:underline"
+              activeProps={{ className: "text-primary font-medium underline" }}
+            >
+              Map
+            </Link>
+            <Link
+              to="/explorer"
+              className="text-primary font-medium hover:underline"
+              activeProps={{ className: "text-primary font-medium underline" }}
+            >
+              Explorer
+            </Link>
+            <Link
+              to="/about"
+              className="text-primary font-medium hover:underline"
+              activeProps={{ className: "text-primary font-medium underline" }}
+            >
+              About
+            </Link>
+            <Link
+              to="/help"
+              className="text-primary font-medium hover:underline"
+              activeProps={{ className: "text-primary font-medium underline" }}
+            >
+              Help
+            </Link>
+          </div>
+          <div className='border-l-2 h-full py-3 border-gray-300' />
           <Link
-            to="/"
-            className="text-primary font-medium hover:underline"
+            to="/pantries"
+            className="flex gap-2 items-center text-primary font-medium hover:underline"
             activeProps={{ className: "text-primary font-medium underline" }}
           >
-            Map
+            <MapPin className='w-5 h-5' /> Find a Pantry
           </Link>
-          <Link
-            to="/explorer"
-            className="text-primary font-medium hover:underline"
-            activeProps={{ className: "text-primary font-medium underline" }}
-          >
-            Explorer
-          </Link>
-          <Link
-            to="/about"
-            className="text-primary font-medium hover:underline"
-            activeProps={{ className: "text-primary font-medium underline" }}
-          >
-            About
-          </Link>
-          <Link
-            to="/help"
-            className="text-primary font-medium hover:underline"
-            activeProps={{ className: "text-primary font-medium underline" }}
-          >
-            Help
-          </Link>
+          <div className='border-l-2 h-full py-3 border-gray-300' />
           <a
             href="#"
             style={{ backgroundColor: '#e63946', color: 'white' }}
@@ -55,6 +66,7 @@ const Header: React.FC<HeaderProps> = ({ toggleMobileMenu, mobileButtonRef }) =>
             Donate
           </a>
         </nav>
+
         <button
           ref={mobileButtonRef}
           className="md:hidden border border-primary text-primary p-2 rounded-full"

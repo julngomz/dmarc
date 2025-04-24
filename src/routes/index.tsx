@@ -3,14 +3,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import Sidebar from '../components/map/Sidebar'
 import LocationModal from '../components/map/LocationModal'
 import MapPlaceholder from '../components/ui/MapPlaceholder'
-import PantryButton from '../components/map/PantryButton'
-import DataButton from '../components/map/DataButton'
 
 import Map from '../components/map/Map'
-import DataBox from '../components/map/DataBox'
-
-import { mockLocations, Location } from '../lib/types'
-import { useClickOutside, useTransitionState } from '../lib/hooks'
+import { mockLocations } from './pantries'
+import DataCrumbs from '../components/map/DataCrumbs'
+import { Crumbs } from '../lib/types'
+import DataFilter from '../components/map/DataFilter'
+import Modal from '../components/map/Modal'
+import CenterControl from '../components/map/CenterControl'
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -18,28 +18,35 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   // State
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [resetData, setResetData] = useState<boolean>(false)
 
-  // Footer
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const resetFilter = () => setResetData(true)
 
-  // Pantry Button Visibility State
-  // const showPantryButton = useTransitionState(!sidebarOpen, 200)
+  const [demographic, setDemographic] = useState('Overall')
+  const [demographicSubcategory, setDemographicSubcategory] = useState('All')
+  const [selectedCity, setSelectedCity] = useState('Overall')
+  const [selectedZipCode, setSelectedZipCode] = useState('All')
+  const [year, setYear] = useState('2025')
+  const [month, setMonth] = useState('All')
 
-  // Sidebar
-  const sidebarRef = useRef<HTMLDivElement | null>(null)
-  const openSidebar = () => setSidebarOpen(true)
-  const closeSidebar = () => setSidebarOpen(false)
+  const [crumbs, setCrumbs] = useState<Crumbs>({
+    demographic: "Overall",
+    year: "2025",
+    month: "All",
+    demographicSubcategory: "All",
+    selectedCity: "Overall",
+    selectedZipCode: "Overall"
+  })
 
-  // Location Modal
-  const openModal = (location: Location) => {
-    setSelectedLocation(location)
-    setModalOpen(true)
+  const updateCrumbs = (updates: Partial<Crumbs>) => {
+    setCrumbs((prevCrumbs: Crumbs) => {
+      return { ...prevCrumbs, ...updates }
+    })
   }
 
-  const closeModal = () => setModalOpen(false)
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <>
@@ -48,28 +55,18 @@ function Index() {
         <Map context={'cities'} />
       </div>
 
-      {/* Sidebar AFTER the buttons (higher in DOM order) */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        sidebarRef={sidebarRef}
-        locations={mockLocations}
-        closeSidebar={closeSidebar}
-        openModal={openModal}
-      />
+      <DataFilter
+        onChange={updateCrumbs} />
 
-      {/* Buttons first (lower in DOM order) */}
-      <PantryButton
-        onClick={openSidebar}
-      />
+      <DataCrumbs
+        crumbs={crumbs}
+        onClick={openModal} />
 
-      <DataButton />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal} />
 
-      {/* Modal in top layer */}
-      <LocationModal
-        isOpen={modalOpen}
-        location={selectedLocation}
-        closeModal={closeModal}
-      />
+      <CenterControl onClick={resetFilter} />
     </>
   )
 }

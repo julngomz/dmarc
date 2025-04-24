@@ -1,19 +1,26 @@
 import maplibregl from "maplibre-gl"
 import 'maplibre-gl/dist/maplibre-gl.css'
-import * as MAP_DEFAULTS from "../../lib/metro_map/defaults/index"
+import * as MAP_DEFAULTS from "../../lib/map/defaults"
 import { useEffect, useRef, useState } from "react"
 import { Protocol } from "pmtiles"
-import MetroMap from "../../lib/metro_map/MetroMap"
-import PopUp from "./Popup"
+import MetroMap from "../../lib/map/MetroMap"
+
+import { Map as MLMap } from 'maplibre-gl'
+
+const apiKey = import.meta.env.VITE_MAPTILER_API_KEY
+
+console.log(apiKey)
 
 interface MapProps {
   context: string,
 }
 
 const Map: React.FC<MapProps> = ({ context }) => {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
-  const map = useRef<MetroMap | null>(null)
+  const map = useRef<MLMap | null>(null)
   const [mapError, setMapError] = useState<string | null>(null)
+  const contexts = ['cities', 'zips', 'nhoods']
 
   const protocol = new Protocol()
   maplibregl.addProtocol("pmtiles", protocol.tile)
@@ -23,59 +30,39 @@ const Map: React.FC<MapProps> = ({ context }) => {
     if (!mapContainer.current) return
 
     try {
-      map.current = new MetroMap({
+      map.current = new MLMap({
         container: mapContainer.current,
-        style: {
-          version: 8,
-          glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-          sources: {
-            'osm': MAP_DEFAULTS.SOURCES.BASEMAP,
-            'cities': MAP_DEFAULTS.SOURCES.CITIES,
-            'zips': MAP_DEFAULTS.SOURCES.ZIP_CODES,
-            'nhoods': MAP_DEFAULTS.SOURCES.NHOODS,
-            // 'pantries': {
-            //  type: 'geojson',
-            //  data: '/data/metro/pantries.json'
-            // }
-          },
-          layers: [
-            MAP_DEFAULTS.LAYERS.BASEMAP,
-            ...MAP_DEFAULTS.LAYERS.NHOODS,
-            ...MAP_DEFAULTS.LAYERS.CITIES,
-            ...MAP_DEFAULTS.LAYERS.ZIP_CODE,
-            // {
-            //  id: 'pantries',
-            //  type: 'circle',
-            //  source: 'pantries',
-            //  paint: {
-            //    'circle-color': '#FF0000',
-            //    'circle-radius': 6,
-            //    'circle-stroke-width': 2,
-            //    'circle-stroke-color': '#FFFFFF'
-            //  }
-            //}
-          ]
-        },
-        center: MAP_DEFAULTS.STATIC.MAP_CENTER,
+        style: 'https://mapprojectbucket.s3.us-west-2.amazonaws.com/blueberry.json',
         maxBounds: MAP_DEFAULTS.STATIC.BOUNDS,
+        bounds: [[-93.952374, 41.419612,], [-93.367352, 41.778021]], // -93.952374,41.419612,-93.367352,41.778021
         dragRotate: false,
         keyboard: false,
-        touchZoomRotate: true,
-        scrollZoom: true,
+        touchZoomRotate: false,
+        scrollZoom: false,
         doubleClickZoom: false,
         attributionControl: false,
-        dragPan: false,
+        dragPan: true,
         cooperativeGestures: false,
-        touchPitch: false
-      },
-        'zips',
-        ['zips', 'cities', 'nhoods']
-      )
+        touchPitch: false,
+      })
+
+      map.current!.once('load', () => {
+        map.current?.addSource("cities", MAP_DEFAULTS.SOURCES.CITIES)
+        MAP_DEFAULTS.LAYERS.CITIES.forEach(layer => {
+          map.current?.addLayer(layer)
+          map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
+        })
+        map.current?.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
+        MAP_DEFAULTS.LAYERS.ZIP_CODE.forEach(layer => {
+          map.current?.addLayer(layer)
+        })
+      })
+
 
       // Add error handling for tile loading
       map.current.on('error', (e) => {
         console.error('Map error:', e.error);
-        setMapError('Failed to load map tiles. Please check your internet connection.');
+        setMapError(`Failed to load map tiles: ${e.error}`);
       });
 
     } catch (error) {
@@ -91,6 +78,7 @@ const Map: React.FC<MapProps> = ({ context }) => {
     }
   }, []);
 
+  /*
   // Update the map when the context changes when picking a list from dropdown options
   useEffect(() => {
     if (!map.current) return
@@ -103,10 +91,11 @@ const Map: React.FC<MapProps> = ({ context }) => {
       map.current.setContext(context)
     }
   }, [context])
+  */
 
   if (mapError) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+      <div className="z-30 w-full h-full flex items-center justify-center bg-gray-100">
         <div className="text-center p-4">
           <p className="text-red-500">{mapError}</p>
           <button
@@ -117,7 +106,7 @@ const Map: React.FC<MapProps> = ({ context }) => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (

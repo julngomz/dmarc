@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from '@tanstack/react-router'
+import { MapPin } from 'lucide-react'
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -17,34 +18,43 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, mobileMenuRef }: Mobile
         md:hidden bg-white border-b shadow-md py-3 px-4 fixed top-12 left-0 right-0 z-20 w-full
         ${isOpen ? 'translate-y-0' : 'translate-y-full'}
       `}>
-      <nav className="flex flex-col space-y-3 w-full">
+      <nav className="flex flex-col gap-6 w-full">
+        <div className='flex flex-col gap-3'>
+          <Link
+            to="/"
+            className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
+            activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
+          >
+            Map
+          </Link>
+          <Link
+            to="/explorer"
+            className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
+            activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
+          >
+            Explorer
+          </Link>
+          <Link
+            to="/about"
+            className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
+            activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
+          >
+            About
+          </Link>
+          <Link
+            to="/help"
+            className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
+            activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
+          >
+            Help
+          </Link>
+        </div>
         <Link
-          to="/"
-          className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
-          activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
+          to="/pantries"
+          className="flex gap-2 items-center text-primary font-medium hover:underline"
+          activeProps={{ className: "text-primary font-medium underline" }}
         >
-          Map
-        </Link>
-        <Link
-          to="/explorer"
-          className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
-          activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
-        >
-          Explorer
-        </Link>
-        <Link
-          to="/about"
-          className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
-          activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
-        >
-          About
-        </Link>
-        <Link
-          to="/help"
-          className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
-          activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
-        >
-          Help
+          <MapPin className='w-5 h-5' /> Find a Pantry
         </Link>
         <a
           href="#"
