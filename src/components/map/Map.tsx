@@ -41,7 +41,7 @@ const Map: React.FC<MapProps> = ({ context }) => {
         scrollZoom: false,
         doubleClickZoom: false,
         attributionControl: false,
-        dragPan: true,
+        dragPan: false,
         cooperativeGestures: false,
         touchPitch: false,
       })

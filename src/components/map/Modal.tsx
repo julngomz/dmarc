@@ -1,14 +1,24 @@
 import { X } from "lucide-react"
 
 interface ModalProps {
+  data: any
   isOpen: boolean
   onClose: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }: ModalProps) => {
+const Modal: React.FC<ModalProps> = ({
+  data,
+  isOpen,
+  onClose
+}: ModalProps) => {
   return (
     <div
-      className={`${isOpen ? '' : 'hidden'} backdrop-blur-[1px] backdrop-brightness-50 absolute z-10 w-full h-full flex justify-center items-center`}>
+      className={` 
+          ${isOpen ? '' : 'hidden'} 
+          backdrop-blur-[1px] backdrop-brightness-50 absolute z-10 
+          w-full h-full flex justify-center items-center 
+          transition-all duration-300 ease-in
+      `}>
       <div className="relative bg-white rounded-lg h-11/12 w-11/12 md:w-8/12 md:h-11/12">
         <div className="absolute top-2 right-2 left-auto">
           <button
