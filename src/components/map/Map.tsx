@@ -39,6 +39,10 @@ const Map = () => {
         touchZoomRotate: false,
         scrollZoom: false,
         doubleClickZoom: false,
+        attributionControl: false,
+        dragPan: false,
+        cooperativeGestures: false,
+        touchPitch: false,
       })
 
       map.current!.setContext('zips')

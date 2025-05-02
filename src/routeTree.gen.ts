@@ -16,9 +16,33 @@ import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
+<<<<<<< Updated upstream
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+=======
+const MapRoute = MapImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HelpRoute = HelpImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExplorerRoute = ExplorerImport.update({
+  id: '/explorer',
+  path: '/explorer',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+>>>>>>> Stashed changes
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +63,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+<<<<<<< Updated upstream
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
+=======
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/explorer': {
+      id: '/explorer'
+      path: '/explorer'
+      fullPath: '/explorer'
+      preLoaderRoute: typeof ExplorerImport
+      parentRoute: typeof rootRoute
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpImport
+      parentRoute: typeof rootRoute
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapImport
+>>>>>>> Stashed changes
       parentRoute: typeof rootRoute
     }
   }
@@ -53,7 +106,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+<<<<<<< Updated upstream
   '/dashboard': typeof DashboardRoute
+=======
+  '/about': typeof AboutRoute
+  '/explorer': typeof ExplorerRoute
+  '/help': typeof HelpRoute
+  '/map': typeof MapRoute
+>>>>>>> Stashed changes
 }
 
 export interface FileRoutesByTo {
