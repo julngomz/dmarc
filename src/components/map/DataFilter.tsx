@@ -9,6 +9,7 @@ import {
   SlidersHorizontal
 } from 'lucide-react'
 
+
 const defaultCrumbs: Crumbs = {
   demographic: "Overall",
   demographicSubcategory: "All",
@@ -26,10 +27,6 @@ type ZipCode = {
 type CityZipCodes = {
   [key: string]: ZipCode[]
 }
-
-const PantryLocations: string[] = [
-  // Todo: Pantries
-]
 
 const DEMOGRAPHICS: string[] = [
   "Overall",
@@ -91,6 +88,7 @@ const DataFilter: React.FC<DataFilterProps> = ({
 }: DataFilterProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [tempCrumbs, setTempCrumbs] = useState<Crumbs>(data)
+
 
   // Update temp values when the filter panel is opened
   useEffect(() => {

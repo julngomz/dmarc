@@ -1,30 +1,57 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { useRef, useState, useEffect } from 'react'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
+import Header from '../components/ui/Header'
+import MobileMenu from '../components/ui/MobileMenu'
+import Footer from '../components/ui/Footer'
 
 export const Route = createRootRoute({
-  component: RootRoute,
-})
+  component: RootComponent,
+});
 
-function RootRoute() {
+function RootComponent() {
+  // Mobile menu state and refs
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const mobileButtonRef = useRef<HTMLButtonElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
+
+  // Toggle functions
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        mobileButtonRef.current &&
+        !mobileButtonRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
   return (
-    <div className="overflow-hidden">
-      <header hidden className='flex p-4 justify-between items-center border-b-[0.5px] font-sans'>
-        <div className=''>
-          <p className='text-xl font-bold'>DMARC</p>
-        </div>
-        <div className="flex text-2xl gap-4">
-          <Link to="/" className="[&.active]:underline">
-            Map
-          </Link>
-          <Link to="/dashboard" className="[&.active]:underline decoration-2">
-            Dashboard
-          </Link>
-        </div>
-      </header>
-      <main>
+    <div className="flex flex-col h-screen w-full bg-white">
+      <Header
+        toggleMobileMenu={toggleMobileMenu}
+        mobileButtonRef={mobileButtonRef} />
+
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        mobileMenuRef={mobileMenuRef} />
+
+      <div className="relative flex w-full h-full overflow-hidden">
         <Outlet />
-      </main>
-      <TanStackRouterDevtools />
+      </div>
+
+      <Footer />
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
 import { LayerSpecification } from "maplibre-gl"
 
 const BASEMAP: LayerSpecification = {
-  id: "osm",
-  type: "raster",
-  source: "osm",
-  minzoom: 10,
-  maxzoom: 14,
+  id: 'osm',
+  type: 'raster',
+  source: 'osm',
+  minzoom: 0,
+  maxzoom: 22
 }
 
 const CITIES: LayerSpecification[] = [
@@ -72,10 +72,10 @@ const ZIP_CODE: LayerSpecification[] = [
     "source-layer": 'zips',
     paint: {
       "fill-color": "#BBDEFB",
-      "fill-opacity": 0.7
+      "fill-opacity": 0.7,
     },
     layout: {
-      visibility: 'none'
+      visibility: 'none',
     }
   },
   {

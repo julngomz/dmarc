@@ -11,19 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardImport } from './routes/dashboard'
+import { Route as PantriesImport } from './routes/pantries'
+import { Route as HelpImport } from './routes/help'
+import { Route as ExplorerImport } from './routes/explorer'
+import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-<<<<<<< Updated upstream
-const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-=======
-const MapRoute = MapImport.update({
-  id: '/map',
-  path: '/map',
+const PantriesRoute = PantriesImport.update({
+  id: '/pantries',
+  path: '/pantries',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -42,7 +40,6 @@ const ExplorerRoute = ExplorerImport.update({
 const AboutRoute = AboutImport.update({
   id: '/about',
   path: '/about',
->>>>>>> Stashed changes
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -63,13 +60,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-<<<<<<< Updated upstream
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
-=======
     '/about': {
       id: '/about'
       path: '/about'
@@ -91,12 +81,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpImport
       parentRoute: typeof rootRoute
     }
-    '/map': {
-      id: '/map'
-      path: '/map'
-      fullPath: '/map'
-      preLoaderRoute: typeof MapImport
->>>>>>> Stashed changes
+    '/pantries': {
+      id: '/pantries'
+      path: '/pantries'
+      fullPath: '/pantries'
+      preLoaderRoute: typeof PantriesImport
       parentRoute: typeof rootRoute
     }
   }
@@ -106,44 +95,52 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-<<<<<<< Updated upstream
-  '/dashboard': typeof DashboardRoute
-=======
   '/about': typeof AboutRoute
   '/explorer': typeof ExplorerRoute
   '/help': typeof HelpRoute
-  '/map': typeof MapRoute
->>>>>>> Stashed changes
+  '/pantries': typeof PantriesRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/about': typeof AboutRoute
+  '/explorer': typeof ExplorerRoute
+  '/help': typeof HelpRoute
+  '/pantries': typeof PantriesRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/about': typeof AboutRoute
+  '/explorer': typeof ExplorerRoute
+  '/help': typeof HelpRoute
+  '/pantries': typeof PantriesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths: '/' | '/about' | '/explorer' | '/help' | '/pantries'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard'
+  to: '/' | '/about' | '/explorer' | '/help' | '/pantries'
+  id: '__root__' | '/' | '/about' | '/explorer' | '/help' | '/pantries'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
+  AboutRoute: typeof AboutRoute
+  ExplorerRoute: typeof ExplorerRoute
+  HelpRoute: typeof HelpRoute
+  PantriesRoute: typeof PantriesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  AboutRoute: AboutRoute,
+  ExplorerRoute: ExplorerRoute,
+  HelpRoute: HelpRoute,
+  PantriesRoute: PantriesRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,14 +154,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard"
+        "/about",
+        "/explorer",
+        "/help",
+        "/pantries"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
+    "/about": {
+      "filePath": "about.tsx"
+    },
+    "/explorer": {
+      "filePath": "explorer.tsx"
+    },
+    "/help": {
+      "filePath": "help.tsx"
+    },
+    "/pantries": {
+      "filePath": "pantries.tsx"
     }
   }
 }
