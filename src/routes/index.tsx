@@ -7,7 +7,7 @@ import { Crumbs } from '../lib/types'
 import DataFilter from '../components/map/DataFilter'
 import Modal from '../components/map/Modal'
 import CenterControl from '../components/map/CenterControl'
-        
+
 
 const defaultCrumbs: Crumbs = {
   demographic: "Overall",
@@ -17,27 +17,6 @@ const defaultCrumbs: Crumbs = {
   year: "2025",
   month: "All"
 }
-
-function Index() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [crumbs, setCrumbs] = useState<Crumbs>(defaultCrumbs)
-
-  // Modal handlers
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
-
-  // Filter handlers
-  const handleFilterChange = (newCrumbs: Crumbs) => {
-    setCrumbs(newCrumbs)
-  }
-
-  const handleResetFilter = () => {
-    setCrumbs(defaultCrumbs)
-  }
-
-export const Route = createFileRoute('/')({
-  component: Index,
-})
 
 function Index() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
