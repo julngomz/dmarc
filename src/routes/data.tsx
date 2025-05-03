@@ -20,7 +20,7 @@ interface ExcelResponse {
   }
 }
 
-export const Route = createFileRoute('/explorer')({
+export const Route = createFileRoute('/data')({
   component: RouteComponent,
 })
 
