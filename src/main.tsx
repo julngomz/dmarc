@@ -1,6 +1,8 @@
-import { StrictMode } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { QueryProvider } from './lib/providers/QueryProvider'
+import './index.css'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -15,13 +17,14 @@ declare module '@tanstack/react-router' {
   }
 }
 
-// Render the app
-const rootElement = document.getElementById('root')!
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(
-    <StrictMode>
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Failed to find the root element')
+
+const root = ReactDOM.createRoot(rootElement)
+root.render(
+  <React.StrictMode>
+    <QueryProvider>
       <RouterProvider router={router} />
-    </StrictMode>,
-  )
-}
+    </QueryProvider>
+  </React.StrictMode>,
+)
