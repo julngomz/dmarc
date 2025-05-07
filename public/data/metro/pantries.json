@@ -1,159 +1,201 @@
 {
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Catholic Charities Outreach Center",
-          "address": "1815 Hubbell Avenue, Des Moines, IA 50316"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.598420, 41.600545]
-        }
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Catholic Charities Outreach Center",
+        "address": "1815 Hubbell Avenue, Des Moines, IA 50316",
+        "phone": "(515) 555-0101",
+        "email": "contact@ccoutreach.org",
+        "website": "https://www.ccoutreach.org"
       },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Central Iowa Shelter & Services",
-          "address": "1420 Mulberry Street, Des Moines, IA 50314"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.634674, 41.583551]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Clive Community Services",
-          "address": "2190 NW 82nd Street St A, Clive, IA 50325"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.740540, 41.603220]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "DMARC-ket Southside Food Pantry",
-          "address": "100 Army Post Road, Des Moines, IA 50314"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.618485, 41.526268]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Eastview Food Pantry",
-          "address": "4101 E 42nd St, Des Moines, IA 50317"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.544678, 41.612345]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Families Forward Bidwell Food Pantry",
-          "address": "1203 S.E. Hartford Avenue, Des Moines, IA 50315"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.600123, 41.561234]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "IMPACT Community Action Partnership – Ankeny",
-          "address": "641 S. Ankeny Blvd, Ankeny, IA 50023"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.600987, 41.725345]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "IMPACT Community Action Partnership – Drake Neighborhood",
-          "address": "3226 University Avenue, Des Moines, IA 50311"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.656789, 41.600789]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Johnston Partnership Food Pantry",
-          "address": "5870 Merle Hay Rd. Ste D, Johnston, IA 50131"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.697654, 41.673456]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Polk County Northside Food Pantry",
-          "address": "3010 Sixth Avenue, Des Moines, IA 50313"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.623456, 41.612987]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Polk County River Place Food Pantry",
-          "address": "2309 Euclid Avenue, Des Moines, IA 50310"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.637890, 41.626789]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Salvation Army Clive Food Pantry",
-          "address": "1400 NW 100th St, Clive, IA 50325"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.758765, 41.609876]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "Urbandale Food Pantry",
-          "address": "7611 Douglas Ave. Ste 34/35, Urbandale, IA 50322"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.725432, 41.630123]
-        }
-      },
-      {
-        "type": "Feature",
-        "properties": {
-          "name": "West Des Moines Human Services",
-          "address": "139 6th Street, West Des Moines, IA 50265"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-93.711234, 41.570987]
-        }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.598420, 41.600545]
       }
-    ]
-  }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Central Iowa Shelter & Services",
+        "address": "1420 Mulberry Street, Des Moines, IA 50314",
+        "phone": "(515) 555-0102",
+        "email": "info@cishelter.org",
+        "website": "https://www.cishelter.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.634674, 41.583551]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Clive Community Services",
+        "address": "2190 NW 82nd Street St A, Clive, IA 50325",
+        "phone": "(515) 555-0103",
+        "email": "help@cliveservices.org",
+        "website": "https://www.cliveservices.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.740540, 41.603220]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "DMARC-ket Southside Food Pantry",
+        "address": "100 Army Post Road, Des Moines, IA 50314",
+        "phone": "(515) 555-0104",
+        "email": "southside@dmarc.org",
+        "website": "https://www.dmarc.org/southside"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.618485, 41.526268]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eastview Food Pantry",
+        "address": "1421 Walker Street, Des Moines, IA 50316",
+        "phone": "(515) 555-0105",
+        "email": "info@eastviewpantry.org",
+        "website": "https://www.eastviewpantry.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.544678, 41.612345]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Families Forward Bidwell Food Pantry",
+        "address": "1203 S.E. Hartford Avenue, Des Moines, IA 50315",
+        "phone": "(515) 555-0106",
+        "email": "info@familiesforward.org",
+        "website": "https://www.familiesforward.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.600123, 41.561234]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "IMPACT Community Action Partnership – Ankeny",
+        "address": "641 S. Ankeny Blvd, Ankeny, IA 50023",
+        "phone": "(515) 555-0107",
+        "email": "ankeny@impactcap.org",
+        "website": "https://www.impactcap.org/ankeny"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.600987, 41.725345]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "IMPACT Community Action Partnership – Drake Neighborhood",
+        "address": "3226 University Avenue, Des Moines, IA 50311",
+        "phone": "(515) 555-0108",
+        "email": "drake@impactcap.org",
+        "website": "https://www.impactcap.org/drake"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.656789, 41.600789]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Johnston Partnership Food Pantry",
+        "address": "5870 Merle Hay Rd. Ste D, Johnston, IA 50131",
+        "phone": "(515) 555-0109",
+        "email": "help@johnstonpartnership.org",
+        "website": "https://www.johnstonpartnership.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.697654, 41.673456]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Polk County Northside Food Pantry",
+        "address": "3010 Sixth Avenue, Des Moines, IA 50313",
+        "phone": "(515) 555-0110",
+        "email": "northside@polkcounty.org",
+        "website": "https://www.polkcounty.org/northside"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.623456, 41.612987]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Polk County River Place Food Pantry",
+        "address": "2309 Euclid Avenue, Des Moines, IA 50310",
+        "phone": "(515) 555-0111",
+        "email": "riverplace@polkcounty.org",
+        "website": "https://www.polkcounty.org/riverplace"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.637890, 41.626789]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Salvation Army Clive Food Pantry",
+        "address": "1400 NW 100th St, Clive, IA 50325",
+        "phone": "(515) 555-0112",
+        "email": "clive@salvationarmy.org",
+        "website": "https://www.salvationarmy.org/clive"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.758765, 41.609876]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Urbandale Food Pantry",
+        "address": "7611 Douglas Ave. Ste 34/35, Urbandale, IA 50322",
+        "phone": "(515) 555-0113",
+        "email": "info@urbandalepantry.org",
+        "website": "https://www.urbandalepantry.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.725432, 41.630123]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Des Moines Human Services",
+        "address": "139 6th Street, West Des Moines, IA 50265",
+        "phone": "(515) 555-0114",
+        "email": "info@wdmhs.org",
+        "website": "https://www.wdmhs.org"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.711234, 41.570987]
+      }
+    }
+  ]
+}
