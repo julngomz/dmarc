@@ -1,17 +1,17 @@
 import { PantryFeature } from './types';
 
-interface PantryPopupProps {
+interface PopupProps {
   pantry: PantryFeature;
   onClose: () => void;
 }
 
-const PantryPopup: React.FC<PantryPopupProps> = ({ pantry, onClose }) => {
+const Popup: React.FC<PopupProps> = ({ pantry, onClose }) => {
   return (
-    <div 
+    <div
       className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 transition-all duration-200 ease-in-out"
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-white/95 backdrop-blur-md p-6 rounded-lg shadow-xl max-w-md w-full mx-4 transition-all duration-200 ease-in-out"
         onClick={(e) => e.stopPropagation()}
       >
@@ -67,4 +67,4 @@ const PantryPopup: React.FC<PantryPopupProps> = ({ pantry, onClose }) => {
   );
 };
 
-export default PantryPopup;
+export default Popup
