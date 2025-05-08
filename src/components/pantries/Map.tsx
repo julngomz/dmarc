@@ -46,8 +46,6 @@ const Map: React.FC<MapProps> = ({
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
-    console.log('Initializing map...');
-
     // Ensure map container has dimensions
     if (mapContainer.current.offsetWidth === 0 || mapContainer.current.offsetHeight === 0) {
       console.error('Map container has zero dimensions. Width:', mapContainer.current.offsetWidth, 'Height:', mapContainer.current.offsetHeight);
@@ -60,8 +58,8 @@ const Map: React.FC<MapProps> = ({
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: 'https://mapprojectbucket.s3.us-west-2.amazonaws.com/blueberry.json',
-        center: defaultCenter,
-        zoom: 11,
+        bounds: [[-93.952374, 41.419612,], [-93.367352, 41.778021]],
+        zoom: 10,
         attributionControl: false // Disable attribution for cleaner look
       });
 
@@ -153,7 +151,7 @@ const Map: React.FC<MapProps> = ({
     if (markersAdded > 0) {
       try {
         map.current.fitBounds(bounds, {
-          padding: 50,
+          padding: 150,
           maxZoom: 15
         });
       } catch (error) {
@@ -260,15 +258,6 @@ const Map: React.FC<MapProps> = ({
       `;
       document.head.appendChild(style);
 
-      // Center map on user location with a nicely animated flyTo
-      map.current.flyTo({
-        center: userLocation,
-        zoom: 14,
-        speed: 0.8,
-        curve: 1,
-        essential: true
-      });
-
       // Add a radius circle around the user's location
       const sourceId = 'user-location-radius';
       const layerId = 'user-location-radius-layer';
@@ -362,7 +351,7 @@ const Map: React.FC<MapProps> = ({
 
     map.current.flyTo({
       center: userLocation,
-      zoom: 14,
+      zoom: 12,
       speed: 1.2,
       curve: 1.5
     });
