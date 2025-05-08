@@ -2,11 +2,11 @@ import React from 'react'
 import { MapPin } from 'lucide-react'
 import clsx from 'clsx'
 
-interface PantryButtonProps {
+interface ButtonProps {
   onClick: () => void
 }
 
-const PantryButton: React.FC<PantryButtonProps> = ({ onClick }) => {
+const Button: React.FC<ButtonProps> = ({ onClick }) => {
   return (
     <div className={
       clsx(
@@ -23,4 +23,4 @@ const PantryButton: React.FC<PantryButtonProps> = ({ onClick }) => {
   )
 }
 
-export default PantryButton
+export default Button

@@ -39,3 +39,28 @@ export type Crumbs = {
   demographic: string
   demographicSubcategory: string
 }
+
+export interface PantryFeature {
+  type: 'Feature';
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number]; // [longitude, latitude]
+  };
+  properties: {
+    id?: string;
+    name: string;
+    address?: string;
+    hours?: string;
+    phone?: string;
+    website?: string;
+    services?: string[];
+    requirements?: string;
+    notes?: string;
+    // Add any other properties that might be in your pantries.json
+  };
+}
+
+export interface PantryCollection {
+  type: 'FeatureCollection';
+  features: PantryFeature[];
+}

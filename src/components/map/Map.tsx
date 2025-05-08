@@ -47,14 +47,10 @@ const Map: React.FC<MapProps> = ({ context }) => {
       })
 
       map.current!.once('load', () => {
-        map.current?.addSource("cities", MAP_DEFAULTS.SOURCES.CITIES)
-        MAP_DEFAULTS.LAYERS.CITIES.forEach(layer => {
-          map.current?.addLayer(layer)
-          map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
-        })
-        map.current?.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
+        map.current?.addSource("zips", MAP_DEFAULTS.SOURCES.ZIP_CODES)
         MAP_DEFAULTS.LAYERS.ZIP_CODE.forEach(layer => {
           map.current?.addLayer(layer)
+          map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
         })
       })
 
