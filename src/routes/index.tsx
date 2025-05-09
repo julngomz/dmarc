@@ -205,20 +205,18 @@ function Index() {
 
   return (
     <div className="flex flex-col md:flex-row w-full h-[calc(100vh-4rem)]">
-      {/* Map Container - Full width on mobile, 8/12 on md+ */}
       <div className="order-1 md:order-2 w-full md:w-8/12 h-1/2 md:h-full relative">
-        <Map 
-          data={filteredData} 
-          selectedZipCode={selectedZipCode} 
+        <Map
+          data={filteredData}
+          selectedZipCode={selectedZipCode}
           onZipCodeSelect={handleMapZipCodeSelect}
         />
       </div>
 
-      {/* Sidebar Container - Full width on mobile, 4/12 on md+ */}
-      <div className="order-2 md:order-1 w-full md:w-4/12 h-1/2 md:h-full bg-white shadow-lg overflow-y-auto p-4">
-        <div className="space-y-4">
+      <div className=" order-2 md:order-1 w-full md:w-4/12 h-1/2 md:h-full bg-white shadow-lg overflow-y-auto p-4">
+        <div className="flex gap-4">
           {/* Zip Code Filter */}
-          <div>
+          <div className='grow'>
             <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
               Zip Code
             </label>
@@ -238,7 +236,7 @@ function Index() {
           </div>
 
           {/* Field Selection Dropdown */}
-          <div className="mb-4">
+          <div className="grow">
             <label htmlFor="field" className="block text-sm font-medium text-gray-700 mb-1">
               Summary Field
             </label>
@@ -257,11 +255,10 @@ function Index() {
               <option value="race">Race</option>
             </select>
           </div>
-          
-          {/* Summary Display */}
-          <div className="mt-6">
-            {renderSummary()}
-          </div>
+        </div>
+        {/* Summary Display */}
+        <div className="mt-6">
+          {renderSummary()}
         </div>
       </div>
     </div>
