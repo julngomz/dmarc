@@ -1,62 +1,3 @@
-<<<<<<< Updated upstream
-import { useState, useRef } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import MapPlaceholder from '../components/ui/MapPlaceholder'
-import Map from '../components/map/Map'
-import DataCrumbs from '../components/map/DataCrumbs'
-import { Crumbs } from '../lib/types'
-import DataFilter from '../components/map/DataFilter'
-import Modal from '../components/map/Modal'
-import CenterControl from '../components/map/CenterControl'
-        
-
-const defaultCrumbs: Crumbs = {
-  demographic: "Overall",
-  demographicSubcategory: "All",
-  selectedCity: "Overall",
-  selectedZipCode: "All",
-  year: "2025",
-  month: "All"
-}
-
-function Index() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [crumbs, setCrumbs] = useState<Crumbs>(defaultCrumbs)
-
-  // Modal handlers
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
-
-  // Filter handlers
-  const handleFilterChange = (newCrumbs: Crumbs) => {
-    setCrumbs(newCrumbs)
-  }
-
-  const handleResetFilter = () => {
-    setCrumbs(defaultCrumbs)
-  }
-
-export const Route = createFileRoute('/')({
-  component: Index,
-})
-
-function Index() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [crumbs, setCrumbs] = useState<Crumbs>(defaultCrumbs)
-
-  // Modal handlers
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
-
-  // Filter handlers
-  const handleFilterChange = (newCrumbs: Crumbs) => {
-    setCrumbs(newCrumbs)
-  }
-
-  const handleResetFilter = () => {
-    setCrumbs(defaultCrumbs)
-  }
-=======
 import React, { useState, useEffect } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import MapPlaceholder from '../components/ui/MapPlaceholder'
@@ -261,7 +202,6 @@ function Index() {
       </div>
     );
   };
->>>>>>> Stashed changes
 
   return (
     <div className="flex flex-col md:flex-row w-full h-[calc(100vh-4rem)]">
@@ -317,16 +257,7 @@ function Index() {
               <option value="race">Race</option>
             </select>
           </div>
-
-<<<<<<< Updated upstream
-      <Modal
-        data={{ data: "data" }}
-        isOpen={isModalOpen}
-        onClose={closeModal} />
-
-      <CenterControl onClick={handleResetFilter} />
-    </>
-=======
+          
           {/* Summary Display */}
           <div className="mt-6">
             {renderSummary()}
@@ -334,10 +265,9 @@ function Index() {
         </div>
       </div>
     </div>
->>>>>>> Stashed changes
   )
 }
 
 export const Route = createFileRoute('/')({
-  component: Index,
+  component: Index
 })

@@ -31,16 +31,50 @@ export interface Pantry {
   data: Collection[]
 }
 
-<<<<<<< Updated upstream
 export type Crumbs = {
   year: string
   month: string
   selectedCity: string
   selectedZipCode: string
-  demographic: string
-  demographicSubcategory: string
+  year: string
+  month: string
 }
-=======
+
+export interface PantryRecord {
+  id: string | number
+  benefitName: string
+  name: string
+  race: string
+  pantryLocation: string
+  snap: string
+  education: string
+  zipCode: string
+  year: string
+  month: string
+  demographic: string
+  ageRange: string,
+  actualCompletionDate: string
+}
+
+export interface PantryFeature {
+  type: 'Feature';
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number]; // [longitude, latitude]
+  };
+  properties: {
+    id?: string;
+    name: string;
+    address?: string;
+    hours?: string;
+    phone?: string;
+    website?: string;
+    services?: string[];
+    requirements?: string;
+    notes?: string;
+  };
+}
+
 export interface PantryRecord {
   id: string
   benefitName: string
@@ -118,4 +152,3 @@ export const defaultFilter: Partial<PantryRecord> = {
   ageRange: 'All',
   gender: 'All'
 }
->>>>>>> Stashed changes

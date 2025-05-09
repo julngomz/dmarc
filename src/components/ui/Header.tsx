@@ -28,11 +28,11 @@ const Header: React.FC<HeaderProps> = ({ toggleMobileMenu, mobileButtonRef }) =>
               Map
             </Link>
             <Link
-              to="/explorer"
+              to="/data"
               className="text-primary font-medium hover:underline"
               activeProps={{ className: "text-primary font-medium underline" }}
             >
-              Explorer
+              Data
             </Link>
             <Link
               to="/about"

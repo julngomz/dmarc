@@ -46,19 +46,12 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
       })
 
       map.current!.once('load', () => {
-        map.current?.addSource("cities", MAP_DEFAULTS.SOURCES.CITIES)
-        MAP_DEFAULTS.LAYERS.CITIES.forEach(layer => {
-          map.current?.addLayer(layer)
-          map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
-        })
-<<<<<<< Updated upstream
         map.current?.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
         MAP_DEFAULTS.LAYERS.ZIP_CODE.forEach(layer => {
           map.current?.addLayer(layer)
+          map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
         })
       })
-=======
->>>>>>> Stashed changes
 
         // Add click handler for zip codes
         map.current?.on('click', 'zips-fill', (e) => {
@@ -106,20 +99,6 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
     }
   }, []);
 
-  /*
-  // Update the map when the context changes when picking a list from dropdown options
-  useEffect(() => {
-    if (!map.current) return
-
-    if (!map.current!.loaded()) {
-      map.current.once('load', () => {
-        map.current!.setContext(context)
-      })
-    } else {
-      map.current.setContext(context)
-    }
-  }, [context])
-  */
 
   // Update the map when selectedZipCode changes
   useEffect(() => {

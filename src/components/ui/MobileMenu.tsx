@@ -28,11 +28,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, mobileMenuRef }: Mobile
             Map
           </Link>
           <Link
-            to="/explorer"
+            to="/data"
             className="text-primary font-medium py-2 hover:bg-gray-50 px-2 rounded block w-full"
             activeProps={{ className: "text-primary font-medium py-2 bg-gray-100 px-2 rounded block w-full" }}
           >
-            Explorer
+            Data
           </Link>
           <Link
             to="/about"

@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as PantriesImport } from './routes/pantries'
 import { Route as HelpImport } from './routes/help'
-import { Route as ExplorerImport } from './routes/explorer'
+import { Route as DataImport } from './routes/data'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
@@ -31,9 +31,9 @@ const HelpRoute = HelpImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ExplorerRoute = ExplorerImport.update({
-  id: '/explorer',
-  path: '/explorer',
+const DataRoute = DataImport.update({
+  id: '/data',
+  path: '/data',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,11 +67,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/explorer': {
-      id: '/explorer'
-      path: '/explorer'
-      fullPath: '/explorer'
-      preLoaderRoute: typeof ExplorerImport
+    '/data': {
+      id: '/data'
+      path: '/data'
+      fullPath: '/data'
+      preLoaderRoute: typeof DataImport
       parentRoute: typeof rootRoute
     }
     '/help': {
@@ -96,7 +96,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/explorer': typeof ExplorerRoute
+  '/data': typeof DataRoute
   '/help': typeof HelpRoute
   '/pantries': typeof PantriesRoute
 }
@@ -104,7 +104,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/explorer': typeof ExplorerRoute
+  '/data': typeof DataRoute
   '/help': typeof HelpRoute
   '/pantries': typeof PantriesRoute
 }
@@ -113,24 +113,24 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/explorer': typeof ExplorerRoute
+  '/data': typeof DataRoute
   '/help': typeof HelpRoute
   '/pantries': typeof PantriesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/explorer' | '/help' | '/pantries'
+  fullPaths: '/' | '/about' | '/data' | '/help' | '/pantries'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/explorer' | '/help' | '/pantries'
-  id: '__root__' | '/' | '/about' | '/explorer' | '/help' | '/pantries'
+  to: '/' | '/about' | '/data' | '/help' | '/pantries'
+  id: '__root__' | '/' | '/about' | '/data' | '/help' | '/pantries'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ExplorerRoute: typeof ExplorerRoute
+  DataRoute: typeof DataRoute
   HelpRoute: typeof HelpRoute
   PantriesRoute: typeof PantriesRoute
 }
@@ -138,7 +138,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ExplorerRoute: ExplorerRoute,
+  DataRoute: DataRoute,
   HelpRoute: HelpRoute,
   PantriesRoute: PantriesRoute,
 }
@@ -155,7 +155,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/explorer",
+        "/data",
         "/help",
         "/pantries"
       ]
@@ -166,8 +166,8 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
-    "/explorer": {
-      "filePath": "explorer.tsx"
+    "/data": {
+      "filePath": "data.tsx"
     },
     "/help": {
       "filePath": "help.tsx"
