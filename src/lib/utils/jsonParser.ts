@@ -23,10 +23,10 @@ export function parseJsonData<T = PantryRecord>(
       snap: record.snap || '',
       education: record.education || '',
       zipCode: record.zipCode?.toString() || '',
-      year: record.actualCompletionDate?.split('-')[0] || '',
-      month: record.actualCompletionDate?.split('-')[1] || '',
-      demographic: record.gender || '',
+      year: record.actualCompletionDate?.split('/')[0] || '',
+      month: record.actualCompletionDate?.split('/')[1] || '',
       ageRange: record.ageRange || '',
+      gender: record.gender || '',
       actualCompletionDate: record.actualCompletionDate || ''
     };
   })

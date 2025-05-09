@@ -10,6 +10,7 @@ import {
   LngLatBounds,
   LngLatBoundsLike,
   Popup,
+  LngLatLike,
 } from "maplibre-gl";
 
 /**
@@ -26,48 +27,27 @@ interface Layers {
 type BoundingBoxes = Map<string, LngLatBoundsLike>
 
 class MetroMap extends MLMap {
-  layers: Layers = { contexts: [], types: [] }
-  activeContext: string = 'cities'
   activeTile: string = ''
   boundingBoxes: BoundingBoxes = new Map()
 
-  constructor(options: MapOptions, context: string, contexts: string[]) {
+  constructor(options: MapOptions) {
     super(options)
-    this.activeContext = context
-    this.layers.contexts = contexts
 
     // Setup and load the map 
     this.on('load', this._onMapLoad.bind(this))
   }
 
-  _onMapLoad() {
-    this._setupEventListeners()
-    this._getBoundingBoxes()
-
-    setTimeout(() => {
-      this._showContext(this.activeContext)
-      // this._setBoundingBox(this.activeContext)
-      this._calculateTilesCenter(this.activeContext)
-    }, 500)
+  public setData(): void {
+    // TODO: Pass in the data to the map to display.
   }
 
-  /**
-  *
-  * The `getBoundingBoxes` gets the bounding box for the source tiles. For all the 
-  * features in the source file, calcualte the center of all tiles. 
-  *
-  * We are going use the bounding box so we can center and zoom the tiles in the center of the map.
-  *
-  */
-  _getBoundingBoxes(): void {
-    const contexts = this.layers.contexts
 
-    contexts.forEach((context) => {
-      const bbox = this._calculateBoundingBox(context)
-      this.boundingBoxes.set(context, bbox)
-    })
+  _onMapLoad() {
+    this._setupEventListeners()
 
-    console.log(`Bounding Boxes: `, this.boundingBoxes)
+    setTimeout(() => {
+      // this._setBoundingBox(this.activeContext)
+    }, 500)
   }
 
   /**
@@ -125,7 +105,7 @@ class MetroMap extends MLMap {
       ]
 
       this.fitBounds(mapBounds, {
-        padding: 50,
+        padding: 150,
         maxZoom: 16,
         duration: 700
       })
@@ -178,18 +158,12 @@ class MetroMap extends MLMap {
   }
 
   _handleFeatureClick(e: MapMouseEvent) {
-    if (!this._isValidContext(this.activeContext)) {
-      console.log('Handle Clicks')
-      console.error(`Invalid context: ${this.activeContext}`);
-      return;
-    }
-
-    const features = this.queryRenderedFeatures(e.point, { layers: [`${this.activeContext}-fill`] })
+    const features = this.queryRenderedFeatures(e.point, { layers: [`zips-fill`] })
 
     if (features.length > 0) {
       const feature = features[0]
-      const layerId: string = MAP_DEFAULT.CONFIG.LAYER[this.activeContext!].layerId
-      const property = MAP_DEFAULT.CONFIG.LAYER[this.activeContext!].property
+      const layerId: string = MAP_DEFAULT.CONFIG.LAYER['zips'].layerId
+      const property = MAP_DEFAULT.CONFIG.LAYER['zips'].property
       const propertyValue = feature.properties?.[property]
 
       if (!propertyValue) return
@@ -203,44 +177,14 @@ class MetroMap extends MLMap {
         "#808080"                 // Default color
       ])
 
-      this.setPaintProperty(layerId, 'fill-opacity', 0.7)
-
       this.flyTo({
-        center: tileCenter as [number, number],
-        zoom: MAP_DEFAULT.CONFIG.LAYER[this.activeContext].zoom,
-        duration: 400,
+        zoom: 11,
+        center: tileCenter as LngLatLike,
+        duration: 500
       })
+
+      this.setPaintProperty(layerId, 'fill-opacity', 0.7)
     }
-  }
-
-  _addKeyboardEvents(e: KeyboardEvent): void {
-
-  }
-
-  _showContext(context: string): void {
-    const types: string[] = ['fill', 'line', 'symbol']
-
-    this.getStyle().layers.forEach((layer) => {
-      if (layer.id.startsWith(context) && types.includes(layer.type)) {
-        this.setLayoutProperty(layer.id, 'visibility', 'visible')
-      }
-    })
-  }
-
-  _hideContext(context: string): undefined {
-    const types: string[] = ['fill', 'line', 'symbol']
-
-    this.getStyle().layers.forEach((layer) => {
-      if (layer.id.startsWith(context) && types.includes(layer.type)) {
-        this.setLayoutProperty(layer.id, 'visibility', 'none')
-      }
-    })
-
-  }
-
-  _resetContext(context: string): void {
-    this.setPaintProperty(`${context}-fill`, 'fill-opacity', 0.7)
-    this.setPaintProperty(`${context}-fill`, 'fill-color', "#82CAFF")
   }
 
   _setBoundingBox(context: string): void {
@@ -262,68 +206,60 @@ class MetroMap extends MLMap {
     }
   }
 
-  // Utility Methods 
-  _isValidContext(context: string): context is keyof typeof MAP_DEFAULT.CONFIG.LAYER {
-    return (this.layers!.contexts.includes(context) && context in MAP_DEFAULT.CONFIG.LAYER)
-  }
+  _selectZipCode(zipCode: string): boolean {
+    if (!this.loaded()) return false;
 
-  /** 
-   *
-   * Sets the `layers.context` property with the available contexts (layers) in the map.
-   * 
-   * The first item [0] in the list with be selected as the active context.
-   *
-   * For example:
-   *
-   *  const contexts: string[] = ['A', 'B', 'C']
-   *
-   *  contexts\[0\] // 'A' is the active context in the map.
-   *
-   **/
-  public setContexts(contexts: string[]): void | undefined {
-    this.layers.contexts = contexts
-  }
+    // Reset all zipcodes to default color first
+    const layerId = MAP_DEFAULT.CONFIG.LAYER['zips'].layerId;
+    this.setPaintProperty(layerId, 'fill-color', "#808080");
+    this.setPaintProperty(layerId, 'fill-opacity', 0.7);
 
-  public getContexts(): string[] | undefined {
-    return this.layers.contexts
-  }
-
-
-  /**
-  *
-  * Sets the layer context in the map, the context must be in the `layers.contexts` property.
-  *
-  */
-  public setContext(context: string): void {
-    if (!this.layers.contexts.includes(context)) {
-      console.log(`${context} is not a member of the allowed contexts ${this.layers.contexts}`)
+    if (zipCode === 'All') {
+      // If 'All' is selected, just reset the view
+      this.flyTo({
+        zoom: 10,
+        center: [-93.63103503160843, 41.58736757438154], // Default center
+        duration: 500
+      });
+      return true;
     }
 
-    const prevContext = this.activeContext
-    this.activeContext = context
+    const features = this.querySourceFeatures('zips', {
+      sourceLayer: 'zips',
+      filter: ['==', 'ZCTA5CE20', zipCode]
+    });
 
+    if (features.length > 0) {
+      const feature = features[0];
 
-    this._hideContext(prevContext)
-    this._resetContext(prevContext)
+      // Highlight the selected zipcode
+      this.setPaintProperty(layerId, 'fill-color', [
+        'match',
+        ['get', 'ZCTA5CE20'],
+        zipCode, "#1E90FF", // Highlight color
+        "#808080"          // Default color
+      ]);
 
-    this._showContext(context)
-    // this._setBoundingBox(context)
+      // Calculate the center of the zipcode
+      const tileCenter = center(feature).geometry.coordinates;
 
-    setTimeout(() => {
-      this._calculateTilesCenter(context)
-    }, 500)
-  }
+      // Fly to the zipcode
+      this.flyTo({
+        zoom: 11,
+        center: tileCenter as LngLatLike,
+        duration: 500
+      });
 
-  public getContext(): string | null {
-    return this.activeContext
-  }
+      // Make sure the zipcode layer is visible
+      this.setLayoutProperty(layerId, 'visibility', 'visible');
+      this.setPaintProperty(layerId, 'fill-opacity', 0.7);
 
-  public insertPopup() {
+      // Update the active tile
+      this.activeTile = zipCode;
+      return true;
+    }
 
-  }
-
-  public setData(): void {
-    // TODO: Pass in the data to the map to display.
+    return false;
   }
 }
 

@@ -6,21 +6,20 @@ import { Protocol } from "pmtiles"
 import MetroMap from "../../lib/map/MetroMap"
 
 import { Map as MLMap } from 'maplibre-gl'
-
-const apiKey = import.meta.env.VITE_MAPTILER_API_KEY
-
-console.log(apiKey)
+import React from 'react'
+import { PantryRecord } from '../../lib/types'
 
 interface MapProps {
-  context: string,
+  data: PantryRecord[]
+  selectedZipCode: string
+  onZipCodeSelect: (zipCode: string) => void
 }
 
-const Map: React.FC<MapProps> = ({ context }) => {
+const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<MLMap | null>(null)
   const [mapError, setMapError] = useState<string | null>(null)
-  const contexts = ['cities', 'zips', 'nhoods']
 
   const protocol = new Protocol()
   maplibregl.addProtocol("pmtiles", protocol.tile)
@@ -30,7 +29,7 @@ const Map: React.FC<MapProps> = ({ context }) => {
     if (!mapContainer.current) return
 
     try {
-      map.current = new MLMap({
+      map.current = new MetroMap({
         container: mapContainer.current,
         style: 'https://mapprojectbucket.s3.us-west-2.amazonaws.com/blueberry.json',
         maxBounds: MAP_DEFAULTS.STATIC.BOUNDS,
@@ -47,13 +46,39 @@ const Map: React.FC<MapProps> = ({ context }) => {
       })
 
       map.current!.once('load', () => {
-        map.current?.addSource("zips", MAP_DEFAULTS.SOURCES.ZIP_CODES)
+        map.current?.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
         MAP_DEFAULTS.LAYERS.ZIP_CODE.forEach(layer => {
           map.current?.addLayer(layer)
           map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
         })
       })
 
+        // Add click handler for zip codes
+        map.current?.on('click', 'zips-fill', (e) => {
+          const features = map.current?.queryRenderedFeatures(e.point, { layers: ['zips-fill'] })
+          if (features && features.length > 0) {
+            const zipCode = features[0].properties?.ZCTA5CE20
+            if (zipCode) {
+              onZipCodeSelect(zipCode)
+            }
+          }
+        })
+
+        // Add hover effect
+        map.current?.on('mouseenter', 'zips-fill', () => {
+          if (map.current) {
+            map.current.getCanvas().style.cursor = 'pointer'
+          }
+        })
+
+        map.current?.on('mouseleave', 'zips-fill', () => {
+          if (map.current) {
+            map.current.getCanvas().style.cursor = ''
+          }
+        })
+
+        setIsLoaded(true)
+      })
 
       // Add error handling for tile loading
       map.current.on('error', (e) => {
@@ -74,20 +99,13 @@ const Map: React.FC<MapProps> = ({ context }) => {
     }
   }, []);
 
-  /*
-  // Update the map when the context changes when picking a list from dropdown options
-  useEffect(() => {
-    if (!map.current) return
 
-    if (!map.current!.loaded()) {
-      map.current.once('load', () => {
-        map.current!.setContext(context)
-      })
-    } else {
-      map.current.setContext(context)
-    }
-  }, [context])
-  */
+  // Update the map when selectedZipCode changes
+  useEffect(() => {
+    if (!map.current || !isLoaded) return;
+    
+    (map.current as MetroMap)._selectZipCode(selectedZipCode);
+  }, [selectedZipCode, isLoaded]);
 
   if (mapError) {
     return (

@@ -41,6 +41,9 @@ const dummyData = [
 interface ModalProps {
   data: PantryRecord[]
   summaryStats: SummaryStats
+  filter: Crumbs
+  data: PantryRecord[]
+  summaryStats: SummaryStats
   crumbs: Crumbs
   isOpen: boolean
   onClose: () => void
@@ -49,7 +52,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({
   data,
   summaryStats,
-  crumbs,
+  filter,
   isOpen,
   onClose
 }: ModalProps) => {
@@ -71,9 +74,8 @@ const Modal: React.FC<ModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ✕
+            className="hover:bg-red-400 hover:text-red-100 hover:cursor-pointer rounded-full p-1">
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -88,10 +90,10 @@ const Modal: React.FC<ModalProps> = ({
 
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">Current Filters</h3>
-            <p>Demographic: {crumbs.demographic}</p>
-            <p>City: {crumbs.selectedCity}</p>
-            <p>Year: {crumbs.year}</p>
-            <p>Month: {crumbs.month}</p>
+            <p>Demographic: {filter.demographic}</p>
+            <p>Location: {filter.pantryLocation}</p>
+            <p>Year: {filter.year}</p>
+            <p>Month: {filter.month}</p>
           </div>
         </div>
 
@@ -135,12 +137,12 @@ const Modal: React.FC<ModalProps> = ({
             <tbody>
               {data.slice(0, 10).map((record, i) => (
                 <tr key={i} className="hover:bg-gray-50 *:text-sm *:text-nowrap *:text-ellipsis">
-                  <td className="py-2 px-4 border-b">{record.ID}</td>
-                  <td className="py-2 px-4 border-b">{record.Name}</td>
-                  <td className="py-2 px-4 border-b">{record.PantryLocation}</td>
-                  <td className="py-2 px-4 border-b">{record.Race}</td>
-                  <td className="py-2 px-4 border-b">{record.Education}</td>
-                  <td className="py-2 px-4 border-b">{record.SNAP}</td>
+                  <td className="py-2 px-4 border-b">{record.id}</td>
+                  <td className="py-2 px-4 border-b">{record.name}</td>
+                  <td className="py-2 px-4 border-b">{record.pantryLocation}</td>
+                  <td className="py-2 px-4 border-b">{record.race}</td>
+                  <td className="py-2 px-4 border-b">{record.education}</td>
+                  <td className="py-2 px-4 border-b">{record.snap}</td>
                 </tr>
               ))}
             </tbody>

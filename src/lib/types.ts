@@ -31,9 +31,9 @@ export interface Pantry {
   data: Collection[]
 }
 
-export interface Crumbs {
-  demographic: string
-  demographicSubcategory: string
+export type Crumbs = {
+  year: string
+  month: string
   selectedCity: string
   selectedZipCode: string
   year: string
@@ -75,7 +75,80 @@ export interface PantryFeature {
   };
 }
 
+export interface PantryRecord {
+  id: string
+  benefitName: string
+  name: string
+  race: string
+  pantryLocation: string
+  snap: string
+  education: string
+  zipCode: string
+  year: string
+  month: string
+  demographic: string
+  ageRange: string
+  gender: string
+  actualCompletionDate: string
+}
+
+export interface Crumbs {
+  id?: string
+  benefitName?: string
+  name?: string
+  race?: string
+  pantryLocation: string
+  snap?: string
+  education?: string
+  zipCode: string
+  year: string
+  month: string
+  demographic: string
+  ageRange?: string
+  gender?: string
+}
+
+export interface DataResponse {
+  data: PantryRecord[]
+  info: {
+    rowCount: number
+  }
+}
+
+export interface PantryFeature {
+  type: 'Feature';
+  geometry: {
+    type: 'Point';
+    coordinates: [number, number]; // [longitude, latitude]
+  };
+  properties: {
+    id?: string;
+    name: string;
+    address?: string;
+    hours?: string;
+    phone?: string;
+    website?: string;
+    services?: string[];
+    requirements?: string;
+    notes?: string;
+  };
+}
+
 export interface PantryCollection {
   type: 'FeatureCollection';
   features: PantryFeature[];
+}
+
+export const defaultFilter: Partial<PantryRecord> = {
+  benefitName: 'All',
+  race: 'All',
+  pantryLocation: 'All',
+  snap: 'All',
+  education: 'All',
+  zipCode: 'All',
+  year: '2025',
+  month: 'All',
+  demographic: 'All',
+  ageRange: 'All',
+  gender: 'All'
 }
