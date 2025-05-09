@@ -169,7 +169,7 @@ function DataExplorer() {
             <span className="ml-2">▼</span>
           </button>
           {isOpen && (
-            <div className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-auto">
+            <div className="absolute z-20 w-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-auto">
               <div
                 className="p-1 cursor-pointer hover:bg-gray-100"
                 onClick={() => {
