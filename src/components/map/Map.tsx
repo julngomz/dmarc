@@ -4,7 +4,6 @@ import * as MAP_DEFAULTS from "../../lib/map/defaults"
 import { useEffect, useRef, useState } from "react"
 import { Protocol } from "pmtiles"
 import MetroMap from "../../lib/map/MetroMap"
-
 import { Map as MLMap } from 'maplibre-gl'
 import React from 'react'
 import { PantryRecord } from '../../lib/types'
@@ -15,7 +14,7 @@ interface MapProps {
   onZipCodeSelect: (zipCode: string) => void
 }
 
-const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => {
+const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }): React.ReactElement => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<MLMap | null>(null)
@@ -45,16 +44,17 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
         touchPitch: false,
       })
 
-      map.current!.once('load', () => {
-        map.current?.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
+      map.current.once('load', () => {
+        if (!map.current) return
+
+        map.current.addSource('zips', MAP_DEFAULTS.SOURCES.ZIP_CODES)
         MAP_DEFAULTS.LAYERS.ZIP_CODE.forEach(layer => {
           map.current?.addLayer(layer)
           map.current?.setLayoutProperty(layer.id, 'visibility', 'visible')
         })
-      })
 
         // Add click handler for zip codes
-        map.current?.on('click', 'zips-fill', (e) => {
+        map.current.on('click', 'zips-fill', (e) => {
           const features = map.current?.queryRenderedFeatures(e.point, { layers: ['zips-fill'] })
           if (features && features.length > 0) {
             const zipCode = features[0].properties?.ZCTA5CE20
@@ -65,13 +65,13 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
         })
 
         // Add hover effect
-        map.current?.on('mouseenter', 'zips-fill', () => {
+        map.current.on('mouseenter', 'zips-fill', () => {
           if (map.current) {
             map.current.getCanvas().style.cursor = 'pointer'
           }
         })
 
-        map.current?.on('mouseleave', 'zips-fill', () => {
+        map.current.on('mouseleave', 'zips-fill', () => {
           if (map.current) {
             map.current.getCanvas().style.cursor = ''
           }
@@ -82,30 +82,29 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
 
       // Add error handling for tile loading
       map.current.on('error', (e) => {
-        console.error('Map error:', e.error);
-        setMapError(`Failed to load map tiles: ${e.error}`);
-      });
+        console.error('Map error:', e.error)
+        setMapError(`Failed to load map tiles: ${e.error}`)
+      })
 
     } catch (error) {
       console.error("Error loading map:", error)
-      setMapError('Failed to initialize map. Please refresh the page.');
+      setMapError('Failed to initialize map. Please refresh the page.')
     }
 
     return () => {
       if (map.current) {
-        map.current.remove();
-        map.current = null;
+        map.current.remove()
+        map.current = null
       }
     }
-  }, []);
-
+  }, [])
 
   // Update the map when selectedZipCode changes
   useEffect(() => {
-    if (!map.current || !isLoaded) return;
+    if (!map.current || !isLoaded) return
     
-    (map.current as MetroMap)._selectZipCode(selectedZipCode);
-  }, [selectedZipCode, isLoaded]);
+    (map.current as MetroMap)._selectZipCode(selectedZipCode)
+  }, [selectedZipCode, isLoaded])
 
   if (mapError) {
     return (
@@ -125,7 +124,7 @@ const Map: React.FC<MapProps> = ({ data, selectedZipCode, onZipCodeSelect }) => 
 
   return (
     <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
-  );
+  )
 }
 
 export default Map
