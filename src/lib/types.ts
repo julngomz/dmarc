@@ -31,13 +31,29 @@ export interface Pantry {
   data: Collection[]
 }
 
-export type Crumbs = {
-  year: string
-  month: string
-  selectedCity: string
-  selectedZipCode: string
+export interface Crumbs {
   demographic: string
   demographicSubcategory: string
+  selectedCity: string
+  selectedZipCode: string
+  year: string
+  month: string
+}
+
+export interface PantryRecord {
+  id: string | number
+  benefitName: string
+  name: string
+  race: string
+  pantryLocation: string
+  snap: string
+  education: string
+  zipCode: string
+  year: string
+  month: string
+  demographic: string
+  ageRange: string,
+  actualCompletionDate: string
 }
 
 export interface PantryFeature {
@@ -56,7 +72,6 @@ export interface PantryFeature {
     services?: string[];
     requirements?: string;
     notes?: string;
-    // Add any other properties that might be in your pantries.json
   };
 }
 

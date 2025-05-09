@@ -4,266 +4,250 @@ import {
   getFilteredRowModel,
   getSortedRowModel,
   flexRender,
-  ColumnFiltersState
+  ColumnFiltersState,
+  ColumnDef,
+  ColumnMeta,
+  CellContext
 } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { createFileRoute } from '@tanstack/react-router'
-import { processExcelFile } from '../lib/data/excel'
 import { useEffect, useState, useMemo, useRef } from 'react'
 import ExplorerPlaceholder from '../components/ui/ExplorerPlaceholder'
+import { useDataQuery } from '../lib/hooks/useDataQuery'
+import { PantryRecord } from '../lib/types'
 
 export const Route = createFileRoute('/data')({
-  component: RouteComponent,
+  component: DataExplorer,
 })
 
-function RouteComponent() {
-  const [pantryData, setPantryData] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+interface CustomColumnMeta {
+  useSelectFilter: boolean
+  width: string
+  showFilter: boolean
+}
+
+type CustomColumnDef = ColumnDef<PantryRecord, unknown> & {
+  meta: CustomColumnMeta
+}
+
+function DataExplorer() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const tableContainerRef = useRef<HTMLDivElement>(null)
 
+  // Use Tanstack Query to fetch JSON data
+  const { data: jsonData, isLoading, error } = useDataQuery<{ data: PantryRecord[], info: { rowCount: number } }>('/data/032025PND.json')
+  console.log(jsonData)
+  // Debug logging
   useEffect(() => {
-    async function loadPantryData() {
-      try {
-        const result = await processExcelFile<any>('/data/032025NPD.xlsx', {
-          sheetName: 'Network Data' // Specify which sheet to use
-        })
-        setPantryData(result.data)
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Failed to load products'))
-      } finally {
-        setIsLoading(false)
-      }
+    if (jsonData?.data?.length) {
+      const firstRecord = jsonData.data[0]
+      console.log('All available fields:', Object.keys(firstRecord))
+      console.log('First record data:', firstRecord)
+      console.log('First record actualCompletionDate:', firstRecord.actualCompletionDate);
+      console.log('First record month value:', firstRecord.actualCompletionDate?.split('-')[1]);
     }
+  }, [jsonData])
 
-    loadPantryData()
-  }, [])
-
-  // Define columns - fixed the format and improved column definitions
-  const columns = useMemo(() => [
+  // Define columns
+  const columns = useMemo<CustomColumnDef[]>(() => [
     {
-      accessorKey: 'BenefitName',
-      header: 'BENEFIT NAME',
-      cell: info => info.getValue() || '-',
-      filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '120px' }
-    },
-    {
-      accessorKey: 'Name',
-      header: 'NAME',
-      cell: info => info.getValue() || '-',
-      filterFn: 'includesString',
-      meta: { useSelectFilter: false, width: '130px' }
-    },
-    {
-      accessorKey: 'Race',
-      header: 'RACE',
-      cell: info => info.getValue() || '-',
-      filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '110px' }
-    },
-    {
-      accessorKey: 'PantryLocation',
+      accessorKey: 'pantryLocation',
       header: 'PANTRY LOCATION',
-      cell: info => {
-        // Extract the proper pantry location data
-        const value = info.getValue();
-        if (value) return value;
-
-        // Try to get from Created By field
-        const row = info.row.original;
-        if (row['Created By']) {
-          // Extract just the pantry name from Created By
-          const createdBy = row['Created By'];
-          if (createdBy.includes('Human Services')) return 'West Des Moines Human Services';
-          if (createdBy.includes('Pantry')) return createdBy;
-          // Otherwise return the full value
-          return createdBy;
-        }
-        return '-';
-      },
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '220px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
     },
     {
-      accessorKey: 'SNAP',
-      header: 'S N A P',
-      cell: info => info.getValue() || '-',
+      accessorKey: 'benefitName',
+      header: 'BENEFIT NAME',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '100px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
     },
     {
-      accessorKey: 'Gender',
+      accessorKey: 'demographic',
       header: 'GENDER',
-      cell: info => info.getValue() || '-',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '90px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
     },
     {
-      accessorKey: 'Education',
+      accessorKey: 'education',
       header: 'EDUCATION',
-      cell: info => info.getValue() || '-',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '160px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
     },
     {
-      accessorKey: 'Created By',
-      header: 'CREATED BY',
-      cell: info => info.getValue() || '-',
-      filterFn: 'includesString',
-      meta: { useSelectFilter: false, width: '150px' }
-    },
-    {
-      accessorKey: 'Actual Completion Date',
-      header: 'ACTUAL COMPLETION DATE',
-      cell: info => info.getValue() || '-',
-      filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '110px' }
-    },
-    {
-      accessorKey: 'IND ID',
-      header: 'I N D I D',
-      cell: info => info.getValue() || '-',
-      filterFn: 'includesString',
-      meta: { useSelectFilter: false, width: '120px' }
-    },
-    {
-      accessorKey: 'HH ID',
-      header: 'H H I D',
-      cell: info => info.getValue() || '-',
-      filterFn: 'includesString',
-      meta: { useSelectFilter: false, width: '120px' }
-    },
-    {
-      accessorKey: 'Age Range',
+      accessorKey: 'ageRange',
       header: 'AGE RANGE',
-      cell: info => info.getValue() || '-',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '100px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
     },
     {
-      accessorKey: 'Zipcodes',
-      header: 'ZIPCODES',
-      cell: info => info.getValue() || '-',
+      accessorKey: 'zipCode',
+      header: 'ZIP CODE',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
       filterFn: 'equals',
-      meta: { useSelectFilter: true, width: '100px' }
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
+    },
+    {
+      accessorKey: 'snap',
+      header: 'SNAP',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
+      filterFn: 'equals',
+      meta: { useSelectFilter: true, width: '200px', showFilter: true }
+    },
+    {
+      accessorKey: 'race',
+      header: 'RACE',
+      cell: (info: CellContext<PantryRecord, unknown>) => info.getValue() || '-',
+      filterFn: 'equals',
+      meta: { useSelectFilter: true, width: '200px', showFilter: false }
     }
   ], [])
 
+  // Initialize table
   const table = useReactTable({
-    data: pantryData,
+    data: jsonData?.data || [],
     columns,
-    state: {
-      columnFilters,
-    },
+    state: { columnFilters },
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    filterFns: {
+      equals: (row, id, filterValue) => {
+        const value = row.getValue(id);
+        return value === filterValue;
+      },
+      includesString: (row, id, filterValue) => {
+        const value = row.getValue(id);
+        return value?.toString().toLowerCase().includes(filterValue.toLowerCase()) ?? false;
+      }
+    },
+    globalFilterFn: 'equals'
   })
 
-  const tableContainerRef = useRef<HTMLDivElement>(null)
-
+  // Set up virtualization for rows
   const { rows } = table.getRowModel()
-
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => 48, // Increased row height for better spacing
+    estimateSize: () => 48,
     overscan: 20,
   })
 
-  // Text filter component
-  const TextFilter = ({ column }) => {
+  // Simplified filter components
+  const Filter = ({ column }: { column: any }) => {
     const columnFilterValue = column.getFilterValue() || '';
+    const [isOpen, setIsOpen] = useState(false);
+
+    if (column.columnDef.meta?.useSelectFilter) {
+      const options = useMemo(() => {
+        if (column.columnDef.meta?.filterOptions) {
+          return column.columnDef.meta.filterOptions;
+        }
+        const uniqueValues = new Set<string>();
+        table.getPreFilteredRowModel().flatRows.forEach(row => {
+          const value = row.getValue(column.id);
+          if (value) uniqueValues.add(value as string);
+        });
+        return Array.from(uniqueValues).sort().map(value => ({ value, label: value }));
+      }, [column.id]);
+
+      return (
+        <div className="relative">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full border p-1 rounded text-sm text-left flex justify-between items-center bg-white"
+          >
+            <span className="truncate">
+              {columnFilterValue ? options.find((opt: { value: string, label: string }) => opt.value === columnFilterValue)?.label || columnFilterValue : 'All'}
+            </span>
+            <span className="ml-2">▼</span>
+          </button>
+          {isOpen && (
+            <div className="absolute z-10 w-full mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-auto">
+              <div
+                className="p-1 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  column.setFilterValue(undefined);
+                  setIsOpen(false);
+                }}
+              >
+                All
+              </div>
+              {options.map((option: { value: string, label: string }, i: number) => (
+                <div
+                  key={i}
+                  className="p-1 cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    column.setFilterValue(option.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
 
     return (
       <input
         type="text"
         value={columnFilterValue}
-        onChange={e => column.setFilterValue(e.target.value || undefined)}
+        onChange={e => {
+          const value = e.target.value || undefined;
+          column.setFilterValue(value);
+          console.log(`Filter changed for ${column.id}:`, value);
+        }}
         placeholder="Search..."
-        className="w-full border p-1 rounded"
+        className="w-full border p-1 rounded text-sm"
       />
-    );
-  };
-
-  // Select filter component
-  const SelectFilter = ({ column }) => {
-    const options = useMemo(() => {
-      const uniqueValues = new Set();
-      table.getPreFilteredRowModel().flatRows.forEach(row => {
-        const value = row.getValue(column.id);
-        if (value !== null && value !== undefined && value !== '') {
-          uniqueValues.add(value);
-        }
-      });
-      return [...uniqueValues.values()].sort();
-    }, [column.id, table]);
-
-    const columnFilterValue = column.getFilterValue();
-
-    return (
-      <select
-        value={columnFilterValue ?? ''}
-        onChange={e => column.setFilterValue(e.target.value || undefined)}
-        className="w-full border p-1 rounded"
-      >
-        <option value="">All</option>
-        {options.map((option, i) => (
-          <option key={i} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
     );
   };
 
   if (isLoading) return <ExplorerPlaceholder />
   if (error) return <div>Explorer Error: {error.message}</div>
+  if (!jsonData?.data?.length) return <div>No data available</div>
 
   return (
     <div className="container mx-auto flex flex-col gap-4 p-4">
-      {/* Data Filter */}
-      <div className="container mx-auto w-full rounded-lg bg-gray-300 p-4">
-        <div className="flex flex-col justify-center items-center">
-          <p className="text-2xl font-bold text-gray-500 mb-4">Filter</p>
-
-          {/* Filter Controls */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-            {table.getAllColumns().map(column => {
-              if (!column.getCanFilter()) return null;
-
-              const header = column.columnDef.header;
-
-              return (
+      {/* Filter Panel */}
+      <div className="w-full rounded-lg bg-gray-100 p-2">
+        <div className="flex flex-col">
+          <p className="text-lg font-semibold text-gray-700 mb-2">Filters</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
+            {table.getAllColumns()
+              .filter(column => column.getCanFilter() && (column.columnDef.meta as CustomColumnMeta)?.showFilter)
+              .map(column => (
                 <div key={column.id} className="flex flex-col">
-                  <label className="text-sm font-medium text-gray-700 mb-1">
-                    {typeof header === 'function' ? column.id : header}
+                  <label className="text-xs font-medium text-gray-600 mb-0.5">
+                    {column.columnDef.header as string}
                   </label>
-                  <div>
-                    {column.columnDef.meta?.useSelectFilter ? (
-                      <SelectFilter column={column} />
-                    ) : (
-                      <TextFilter column={column} />
-                    )}
-                  </div>
+                  <Filter column={column} />
                 </div>
-              );
-            })}
+              ))}
+            <div className="flex items-end">
+              <button
+                onClick={() => {
+                  table.resetColumnFilters();
+                  console.log('All filters cleared');
+                }}
+                className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 text-sm w-full"
+              >
+                Clear All
+              </button>
+            </div>
           </div>
 
-          {/* Reset Filters Button */}
-          <div className="mt-4 flex justify-between items-center w-full">
-            <div className="text-sm text-gray-500">
-              {table.getFilteredRowModel().rows.length} of {table.getPreFilteredRowModel().rows.length} records shown
-            </div>
-            <button
-              onClick={() => table.resetColumnFilters()}
-              className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
-            >
-              Reset Filters
-            </button>
+          <div className="mt-2 text-xs text-gray-500">
+            {table.getFilteredRowModel().rows.length} of {table.getPreFilteredRowModel().rows.length} records shown
           </div>
         </div>
       </div>
@@ -274,75 +258,79 @@ function RouteComponent() {
         className="overflow-auto border rounded-md"
         style={{ height: '600px' }}
       >
-        <div className="relative">
-          <table className="w-full table-fixed border-collapse" style={{ tableLayout: 'fixed' }}>
-            <thead className="bg-gray-100 sticky top-0 z-10">
-              <tr>
-                {table.getHeaderGroups()[0].headers.map(header => (
-                  <th
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer whitespace-nowrap border-2 border-gray-300"
-                    style={{
-                      width: header.column.columnDef.meta?.width || 'auto',
-                      backgroundColor: '#e5e7eb'
-                    }}
-                  >
-                    <div className="flex items-center justify-center">
-                      <span>{flexRender(header.column.columnDef.header, header.getContext())}</span>
+        <table className="w-full border-collapse table-fixed" style={{ tableLayout: 'fixed' }}>
+          <thead className="bg-gray-100 sticky top-0 z-10">
+            <tr>
+              {table.getHeaderGroups()[0].headers.map(header => (
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer whitespace-nowrap border-2 border-gray-300"
+                  style={{
+                    width: (header.column.columnDef.meta as any)?.width || '200px',
+                    backgroundColor: '#e5e7eb',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 20,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}
+                >
+                  <div className="flex items-center justify-center truncate">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.column.getIsSorted() && (
                       <span className="ml-2">
-                        {{
-                          asc: '🔼',
-                          desc: '🔽',
-                        }[header.column.getIsSorted() as string] ?? ''}
+                        {header.column.getIsSorted() === 'asc' ? '🔼' : '🔽'}
                       </span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody
-              style={{
-                height: `${rowVirtualizer.getTotalSize()}px`,
-                position: 'relative',
-              }}
-            >
-              {rowVirtualizer.getVirtualItems().map(virtualRow => {
-                const row = rows[virtualRow.index];
-                return (
-                  <tr
-                    key={row.id}
-                    className={virtualRow.index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: `${virtualRow.size}px`,
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <td
-                        key={cell.id}
-                        className="px-4 py-3 text-center text-sm text-gray-700 border-2 border-gray-200 truncate"
-                        style={{
-                          width: cell.column.columnDef.meta?.width || 'auto',
-                          maxWidth: cell.column.columnDef.meta?.width || 'auto',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody
+            style={{
+              height: `${rowVirtualizer.getTotalSize()}px`,
+              position: 'relative',
+            }}
+          >
+            {rowVirtualizer.getVirtualItems().map(virtualRow => {
+              const row = rows[virtualRow.index];
+              return (
+                <tr
+                  key={row.id}
+                  className={virtualRow.index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <td
+                      key={cell.id}
+                      className="px-4 py-3 text-center text-sm text-gray-700 border-2 border-gray-200 truncate"
+                      style={{
+                        width: (cell.column.columnDef.meta as any)?.width || '200px',
+                        maxWidth: (cell.column.columnDef.meta as any)?.width || '200px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        position: 'relative'
+                      }}
+                      title={cell.getValue() as string}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   )
