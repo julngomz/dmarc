@@ -36,17 +36,6 @@ function DataExplorer() {
 
   // Use Tanstack Query to fetch JSON data
   const { data: jsonData, isLoading, error } = useDataQuery<{ data: PantryRecord[], info: { rowCount: number } }>('/data/032025PND.json')
-  console.log(jsonData)
-  // Debug logging
-  useEffect(() => {
-    if (jsonData?.data?.length) {
-      const firstRecord = jsonData.data[0]
-      console.log('All available fields:', Object.keys(firstRecord))
-      console.log('First record data:', firstRecord)
-      console.log('First record actualCompletionDate:', firstRecord.actualCompletionDate);
-      console.log('First record month value:', firstRecord.actualCompletionDate?.split('-')[1]);
-    }
-  }, [jsonData])
 
   // Define columns
   const columns = useMemo<CustomColumnDef[]>(() => [
@@ -130,7 +119,6 @@ function DataExplorer() {
     globalFilterFn: 'equals'
   })
 
-  // Set up virtualization for rows
   const { rows } = table.getRowModel()
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
@@ -139,7 +127,6 @@ function DataExplorer() {
     overscan: 20,
   })
 
-  // Simplified filter components
   const Filter = ({ column }: { column: any }) => {
     const columnFilterValue = column.getFilterValue() || '';
     const [isOpen, setIsOpen] = useState(false);
@@ -219,7 +206,7 @@ function DataExplorer() {
   return (
     <div className="container mx-auto flex flex-col gap-4 p-4">
       {/* Filter Panel */}
-      <div className="w-full rounded-lg bg-gray-100 p-2">
+      <div className="w-full rounded-lg p-2">
         <div className="flex flex-col">
           <p className="text-lg font-semibold text-gray-700 mb-2">Filters</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
